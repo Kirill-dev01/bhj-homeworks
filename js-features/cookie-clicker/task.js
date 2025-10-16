@@ -1,6 +1,9 @@
-// Находим нужные элементы на странице
+// Находим обязательные элементы на странице
 const cookie = document.getElementById('cookie');
 const clickerCounter = document.getElementById('clicker__counter');
+
+// Находим необязательный элемент для скорости клика.
+// Если его нет, clickerSpeed будет null, и это нормально.
 const clickerSpeed = document.getElementById('clicker__speed');
 
 // Исходные размеры печеньки
@@ -31,20 +34,23 @@ cookie.onclick = () => {
     // Инвертируем флаг для следующего клика
     isIncreased = !isIncreased;
 
-    // --- Повышенный уровень сложности ---
-    const currentTime = new Date();
+    // --- Повышенный уровень сложности (с проверкой) ---
+    // Этот блок будет работать, только если элемент clicker__speed существует
+    if (clickerSpeed) {
+        const currentTime = new Date();
 
-    if (lastClickTime) {
-        // Рассчитываем разницу во времени в секундах
-        const timeDifference = (currentTime - lastClickTime) / 1000;
+        if (lastClickTime) {
+            // Рассчитываем разницу во времени в секундах
+            const timeDifference = (currentTime - lastClickTime) / 1000;
 
-        // Рассчитываем скорость: 1 клик / разница во времени
-        const speed = 1 / timeDifference;
+            // Рассчитываем скорость: 1 клик / разница во времени
+            const speed = 1 / timeDifference;
 
-        // Обновляем текст на странице, округляя до двух знаков после запятой
-        clickerSpeed.textContent = speed.toFixed(2);
+            // Обновляем текст на странице, округляя до двух знаков после запятой
+            clickerSpeed.textContent = speed.toFixed(2);
+        }
+
+        // Обновляем время последнего клика
+        lastClickTime = currentTime;
     }
-
-    // Обновляем время последнего клика
-    lastClickTime = currentTime;
 };
